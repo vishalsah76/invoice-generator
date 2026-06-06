@@ -1,7 +1,21 @@
 [
   {
-    "id": "coke250ml",
+    "id": "coke250mlRS10",
+    "description": "Coke 250ml X28 RS10 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  },
+  {
+    "id": "coke250mlRS15",
     "description": "Coke 250ml X28 RS15 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  },
+  {
+    "id": "coke250mlRS20",
+    "description": "Coke 250ml X28 RS20 @40%",
     "hsn": "22021010",
     "rate": 210,
     "per": "CASE"
@@ -14,6 +28,13 @@
     "per": "CASE"
   },
   {
+    "id": "coke1000ml",
+    "description": "Coke 1L X15 RS50 @40%",
+    "hsn": "22021010",
+    "rate": 300,
+    "per": "CASE"
+  },
+  {
     "id": "coke2l",
     "description": "Coke 2L X9 RS99 @40%",
     "hsn": "22021010",
@@ -21,10 +42,109 @@
     "per": "CASE"
   },
   {
-    "id": "sprite250ml",
+    "id": "coke_225l",
+    "description": "Coke 2.25L X9 RS99 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  },
+  {
+    "id": "sprite250mlRS10",
+    "description": "Sprite 250ml X28 RS10 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  },
+  {
+    "id": "sprite250mlRS15",
     "description": "Sprite 250ml X28 RS15 @40%",
     "hsn": "22021010",
     "rate": 210,
     "per": "CASE"
-  }
+  },
+  {
+    "id": "sprite250mlRS20",
+    "description": "Sprite 250ml X28 RS20 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  },
+    {
+        "id": "sprite750ml",
+        "description": "Sprite 750ml X24 RS40 @40%",
+        "hsn": "22021010",
+        "rate": 300,
+        "per": "CASE"
+    },
+    {
+        "id": "sprite1000ml",
+        "description": "Sprite 1L X15 RS50 @40%",
+        "hsn": "22021010",
+        "rate": 300,
+        "per": "CASE"
+    },
+    {
+        "id": "sprite2l",
+        "description": "Sprite 2L X9 RS99 @40%",
+        "hsn": "22021010",
+        "rate": 210,
+        "per": "CASE"
+    },
+    {
+        "id": "sprite_225l",
+        "description": "Sprite 2.25L X9 RS99 @40%",
+        "hsn": "22021010",
+        "rate": 210,
+        "per": "CASE"
+    },
+    {
+    "id": "fanta250mlRs10",
+    "description": "Fanta 250ml X28 RS10 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  },
+  {
+    "id": "fanta250mlRs15",
+    "description": "Fanta 250ml X28 RS15 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  },
+  {
+    "id": "fanta250mlRs20",
+    "description": "Fanta 250ml X28 RS20 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  },
+    {
+        "id": "fanta750ml",
+        "description": "Fanta 750ml X24 RS40 @40%",
+        "hsn": "22021010",
+        "rate": 300,
+        "per": "CASE"
+    },
+    {
+        "id": "fanta1000ml",
+        "description": "Fanta 1L X15 RS50 @40%",
+        "hsn": "22021010",
+        "rate": 300,
+        "per": "CASE"
+    },
+    {
+        "id": "fanta2l",
+        "description": "Fanta 2L X9 RS99 @40%",
+        "hsn": "22021010",
+        "rate": 210,
+        "per": "CASE"
+    },
+    {
+        "id": "fanta_225l",
+        "description": "Fanta 2.25L X9 RS99 @40%",
+        "hsn": "22021010",
+        "rate": 210,
+        "per": "CASE"
+    }
+
 ]
