@@ -31,12 +31,15 @@ def load_json(filename):
 # ==========================================
 
 @app.route("/")
-@app.route("/")
 def home():
 
     company = load_json("company.json")
     buyers = load_json("buyers.json")
     items = load_json("items.json")
+
+    print("Company:", company)
+    print("Buyers:", len(buyers))
+    print("Items:", len(items))
 
     return render_template(
         "form.html",
