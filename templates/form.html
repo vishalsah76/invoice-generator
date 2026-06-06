@@ -97,9 +97,11 @@
     <label>Select Buyer</label>
     <select id="buyerSelect" onchange="fillBuyerDetails()">
         <option value="">-- Select Buyer --</option>
-        <option value="Luxmi">Luxmi General Store</option>
-        <option value="Pihu">Pihu Traders</option>
-        <option value="Anand">Anand Kirana General Store</option>
+        {% for buyer in buyers %}
+        <option value="{{ buyer.id }}">
+            {{ buyer.businessname }}
+        </option>
+        {% endfor %}
     </select>
 
     <div class="grid-2">
@@ -204,94 +206,12 @@
 // BUYER DATA
 // =====================================
 
-const buyers = {
-
-    Luxmi: {
-        businessname: "Luxmi General Store-Bela",
-        name: "Suman Kumar Yadav",
-        address1: "Ward No-08",
-        address2: "Bela, Basmatiya",
-        gst: "10APBPY6263M1ZK",
-        state: "Bihar",
-        pincode: "854336"
-    },
-
-    Pihu: {
-        businessname: "Pihu Traders",
-        name: "Pihu",
-        address1: "S/O- Thakur Prasad Gupta, Ward No.-4, Near Shiv Man",
-        address2: "Basmatiya",
-        gst: "10BSVPG8917Q2ZX",
-        state: "Bihar",
-        pincode: "854336"
-    },
-
-    Anand: {
-        businessname: "Anand Kirana General Store",
-        name: "Anand",
-        address1: "Ward No. 07,Bela,Basmatia,",
-        address2: "Araria, Bihar",
-        gst: "10IGNPS3504Q1ZV",
-        state: "Bihar",
-        pincode: "854336"
-    }
-};
-
+const buyers = {{ buyers | tojson }};
 // =====================================
 // ITEM DATA
 // =====================================
 
-const itemMaster = {
-
-    coke250ml: {
-        description: "Coke 250ml X28 RS15 @40%",
-        hsn: "22021010",
-        rate: 210,
-        per: "CASE"
-    },
-    coke750ml: {
-        description: "Coke 750ml X24 RS40 @40%",
-        hsn: "22021010",
-        rate: 300,
-        per: "CASE"
-    },
-    coke2l: {
-        description: "Coke 2L X9 RS99 @40%",
-        hsn: "22021010",
-        rate: 210,
-        per: "CASE"
-    },
-    coke_225l: {
-        description: "Coke 2.25L X9 RS99 @40%",
-        hsn: "22021010",
-        rate: 210,
-        per: "CASE"
-    },
-    sprite250ml: {
-        description: "Sprite 250ml X28 RS15 @40%",
-        hsn: "22021010",
-        rate: 210,
-        per: "CASE"
-    },
-    sprite750ml: {
-        description: "Sprite 750ml X24 RS40 @40%",
-        hsn: "22021010",
-        rate: 300,
-        per: "CASE"
-    },
-    sprite2l: {
-        description: "Sprite 2L X9 RS99 @40%",
-        hsn: "22021010",
-        rate: 210,
-        per: "CASE"
-    },
-    sprite_225l: {
-        description: "Sprite 2.25L X9 RS99 @40%",
-        hsn: "22021010",
-        rate: 210,
-        per: "CASE"
-    }
-};
+const itemMaster = {{ items | tojson }};
 
 let sl = 1;
 
@@ -301,24 +221,48 @@ let sl = 1;
 
 function fillBuyerDetails() {
 
-    let selected = document.getElementById("buyerSelect").value;
+    let selected =
+        document.getElementById("buyerSelect").value;
 
     if (!selected) return;
 
-    let buyer = buyers[selected];
+    let buyer =
+        buyers.find(b => b.id === selected);
 
-    document.getElementById("buyer_businessname").value = buyer.businessname;
-    document.getElementById("buyer_name").value = buyer.name;
-    document.getElementById("buyer_address1").value = buyer.address1;
-    document.getElementById("buyer_address2").value = buyer.address2;
-    document.getElementById("buyer_gst").value = buyer.gst;
-    document.getElementById("buyer_state").value = buyer.state;
-    document.getElementById("buyer_pincode").value = buyer.pincode;
+    if (!buyer) return;
+
+    document.getElementById("buyer_businessname").value =
+        buyer.businessname;
+
+    document.getElementById("buyer_name").value =
+        buyer.name;
+
+    document.getElementById("buyer_address1").value =
+        buyer.address1;
+
+    document.getElementById("buyer_address2").value =
+        buyer.address2;
+
+    document.getElementById("buyer_gst").value =
+        buyer.gst;
+
+    document.getElementById("buyer_state").value =
+        buyer.state;
+
+    document.getElementById("buyer_pincode").value =
+        buyer.pincode;
 }
 
 // =====================================
 // ADD ITEM ROW
 // =====================================
+let productOptions = `
+{% for item in items %}
+<option value="{{ item.id }}">
+    {{ item.description }}
+</option>
+{% endfor %}
+`;
 
 function addRow() {
 
@@ -335,14 +279,7 @@ function addRow() {
         <td>
             <select onchange="fillItem(this)">
                 <option value="">Select Item</option>
-                <option value="coke250ml">Coke 250ml</option>
-                <option value="coke750ml">Coke 750ml</option>
-                <option value="coke2l">Coke 2L</option>
-                <option value="coke_225l">Coke 2.25L</option>
-                <option value="sprite250ml">Sprite 250ml</option>
-                <option value="sprite750ml">Sprite 750ml</option>
-                <option value="sprite2l">Sprite 2L</option>
-                <option value="sprite_225l">Sprite 2.25L</option>
+                ${productOptions}
             </select>
         </td>
 
@@ -399,7 +336,10 @@ function fillItem(selectElement) {
 
     if (!selected) return;
 
-    let item = itemMaster[selected];
+    let item =
+        itemMaster.find(i => i.id === selected);
+
+    if (!item) return;
 
     let row = selectElement.parentElement.parentElement;
 
