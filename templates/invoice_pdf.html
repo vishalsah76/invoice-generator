@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+        }
+
+        table {
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        td, th {
+            border:1px solid black;
+            padding:5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>{{ company.company_name }}</h1>
+
+<p>
+GST: {{ company.gstin }}
+</p>
+
+<p>
+Invoice No: {{ invoice_no }}
+</p>
+
+<p>
+Buyer: {{ buyer_businessname }}
+</p>
+
+<table>
+    <tr>
+        <th>Description</th>
+        <th>Qty</th>
+        <th>Rate</th>
+        <th>Amount</th>
+    </tr>
+
+    {% for item in items %}
+    <tr>
+        <td>{{ item.description }}</td>
+        <td>{{ item.qty }}</td>
+        <td>{{ item.rate }}</td>
+        <td>{{ item.amount }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Total: ₹ {{ grand_total }}</h3>
+
+</body>
+</html>

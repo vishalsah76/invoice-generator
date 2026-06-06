@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, send_file
+from flask import Flask, render_template, request, send_file, render_template_string
 from docxtpl import DocxTemplate
 from num2words import num2words
 import os
 import uuid
 import json
+from weasyprint import HTML
 
 app = Flask(__name__)
 
@@ -54,6 +55,8 @@ def home():
 
 @app.route("/generate", methods=["POST"])
 def generate_invoice():
+
+    company = load_json("company.json")
 
     # ==========================================
     # UNIQUE FILE NAME
@@ -235,11 +238,20 @@ def generate_invoice():
     # GENERATE DOCX
     # ==========================================
 
-    doc = DocxTemplate(TEMPLATE_PATH)
+    pdf_output = os.path.join(
+        OUTPUT_DIR,
+        f"{file_id}.pdf"
+    )
 
-    doc.render(data)
+    html = render_template(
+        "invoice_pdf.html",
+        company=company,
+        **data
+    )
 
-    doc.save(docx_output)
+    HTML(
+        string=html
+    ).write_pdf(pdf_output)
 
     # ==========================================
     # CONVERT DOCX TO PDF
@@ -250,9 +262,9 @@ def generate_invoice():
     # ==========================================
 
     return send_file(
-        docx_output,
+        pdf_output,
         as_attachment=True,
-        download_name=f"Invoice-{file_id}.docx"
+        download_name=f"Invoice-{file_id}.pdf"
     )
 
 # ==========================================
