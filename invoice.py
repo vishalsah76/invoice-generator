@@ -1,10 +1,9 @@
-from flask import Flask, render_template, request, send_file, render_template_string
+from flask import Flask, render_template, request, send_file
 from docxtpl import DocxTemplate
 from num2words import num2words
 import os
 import uuid
 import json
-from weasyprint import HTML
 import platform
 
 app = Flask(__name__)
