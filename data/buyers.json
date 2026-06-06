@@ -1,0 +1,32 @@
+[
+  {
+    "id": "Luxmi",
+    "businessname": "Luxmi General Store-Bela",
+    "name": "Suman Kumar Yadav",
+    "address1": "Ward No-08",
+    "address2": "Bela, Basmatiya",
+    "gst": "10APBPY6263M1ZK",
+    "state": "Bihar",
+    "pincode": "854336"
+  },
+  {
+    "id": "Pihu",
+    "businessname": "Pihu Traders",
+    "name": "Pihu",
+    "address1": "S/O- Thakur Prasad Gupta, Ward No.-4, Near Shiv Man",
+    "address2": "Basmatiya",
+    "gst": "10BSVPG8917Q2ZX",
+    "state": "Bihar",
+    "pincode": "854336"
+  },
+  {
+    "id": "Anand",
+    "businessname": "Anand Kirana General Store",
+    "name": "Anand",
+    "address1": "Ward No. 07,Bela,Basmatia",
+    "address2": "Araria, Bihar",
+    "gst": "10IGNPS3504Q1ZV",
+    "state": "Bihar",
+    "pincode": "854336"
+  }
+]

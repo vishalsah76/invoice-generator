@@ -1,0 +1,30 @@
+[
+  {
+    "id": "coke250ml",
+    "description": "Coke 250ml X28 RS15 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  },
+  {
+    "id": "coke750ml",
+    "description": "Coke 750ml X24 RS40 @40%",
+    "hsn": "22021010",
+    "rate": 300,
+    "per": "CASE"
+  },
+  {
+    "id": "coke2l",
+    "description": "Coke 2L X9 RS99 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  },
+  {
+    "id": "sprite250ml",
+    "description": "Sprite 250ml X28 RS15 @40%",
+    "hsn": "22021010",
+    "rate": 210,
+    "per": "CASE"
+  }
+]
