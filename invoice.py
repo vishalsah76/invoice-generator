@@ -243,33 +243,20 @@ def generate_invoice():
     # GENERATE DOCX
     # ==========================================
 
-    pdf_output = os.path.join(
-        OUTPUT_DIR,
-        f"{file_id}.pdf"
-    )
+    doc = DocxTemplate(TEMPLATE_PATH)
 
-    html = render_template(
-        "invoice_pdf.html",
-        company=company,
-        **data
-    )
+    doc.render(data)
 
-    HTML(
-        string=html
-    ).write_pdf(pdf_output)
+    doc.save(docx_output)
 
     # ==========================================
-    # CONVERT DOCX TO PDF
-    # ==========================================
-
-    # ==========================================
-    # RETURN PDF
+    # RETURN DOCX
     # ==========================================
 
     return send_file(
-        pdf_output,
+        docx_output,
         as_attachment=True,
-        download_name=f"Invoice-{file_id}.pdf"
+        download_name=f"Invoice-{file_id}.docx"
     )
 
 # ==========================================
