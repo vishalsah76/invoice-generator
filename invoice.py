@@ -5,6 +5,7 @@ import os
 import uuid
 import json
 from weasyprint import HTML
+import platform
 
 app = Flask(__name__)
 
@@ -19,6 +20,11 @@ TEMPLATE_PATH = os.path.join(BASE_DIR, "template.docx")
 OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+if platform.system() == "Windows":
+    LIBRE_OFFICE_PATH = r"C:\Program Files\LibreOffice\program\soffice.exe"
+else:
+    LIBRE_OFFICE_PATH = "libreoffice"
 
 def load_json(filename):
     with open(

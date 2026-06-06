@@ -3,4 +3,3 @@ docxtpl
 python-docx
 num2words
 gunicorn
-weasyprint
