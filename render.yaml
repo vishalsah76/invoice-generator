@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: invoice-generator
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn invoice:app

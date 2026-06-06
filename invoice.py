@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, send_file
 from docxtpl import DocxTemplate
 from num2words import num2words
-import subprocess
 import os
 import uuid
 
@@ -16,8 +15,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMPLATE_PATH = os.path.join(BASE_DIR, "template.docx")
 
 OUTPUT_DIR = os.path.join(BASE_DIR, "output")
-
-LIBRE_OFFICE_PATH = r"C:\Program Files\LibreOffice\program\soffice.exe"
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
@@ -226,28 +223,14 @@ def generate_invoice():
     # CONVERT DOCX TO PDF
     # ==========================================
 
-    subprocess.run([
-        LIBRE_OFFICE_PATH,
-        "--headless",
-        "--convert-to",
-        "pdf",
-        docx_output,
-        "--outdir",
-        OUTPUT_DIR
-    ], check=True)
-
-    pdf_output = os.path.join(
-        OUTPUT_DIR,
-        f"{file_id}.pdf"
-    )
-
     # ==========================================
     # RETURN PDF
     # ==========================================
 
     return send_file(
-        pdf_output,
-        as_attachment=True
+        docx_output,
+        as_attachment=True,
+        download_name=f"Invoice-{file_id}.docx"
     )
 
 # ==========================================
