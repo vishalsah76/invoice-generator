@@ -3,6 +3,7 @@ from docxtpl import DocxTemplate
 from num2words import num2words
 import os
 import uuid
+import json
 
 app = Flask(__name__)
 
@@ -18,13 +19,31 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
+def load_json(filename):
+    with open(
+        os.path.join(BASE_DIR, "data", filename),
+        "r",
+        encoding="utf-8"
+    ) as f:
+        return json.load(f)
 # ==========================================
 # HOME PAGE
 # ==========================================
 
 @app.route("/")
+@app.route("/")
 def home():
-    return render_template("form.html")
+
+    company = load_json("company.json")
+    buyers = load_json("buyers.json")
+    items = load_json("items.json")
+
+    return render_template(
+        "form.html",
+        company=company,
+        buyers=buyers,
+        items=items
+    )
 
 # ==========================================
 # GENERATE INVOICE
