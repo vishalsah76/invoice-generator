@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice Generator</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            margin: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2, h3 {
+            color: #333;
+        }
+
+        input, select {
+            padding: 8px;
+            margin: 5px;
+            width: 95%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: white;
+        }
+
+        th {
+            background: #2d6cdf;
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-add {
+            background: green;
+            color: white;
+        }
+
+        .btn-remove {
+            background: red;
+            color: white;
+        }
+
+        .btn-submit {
+            background: #2d6cdf;
+            color: white;
+            width: 100%;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Invoice Generator</h2>
+
+<form action="/generate" method="post">
+
+    <h3>Buyer Details</h3>
+
+    <label>Select Buyer</label>
+    <select id="buyerSelect" onchange="fillBuyerDetails()">
+        <option value="">-- Select Buyer --</option>
+        <option value="Luxmi">Luxmi General Store</option>
+        <option value="Pihu">Pihu Traders</option>
+        <option value="Anand">Anand Kirana General Store</option>
+    </select>
+
+    <div class="grid-2">
+
+        <div>
+            <label>Business Name</label>
+            <input name="buyer_businessname" id="buyer_businessname">
+        </div>
+
+        <div>
+            <label>Buyer Name</label>
+            <input name="buyer_name" id="buyer_name">
+        </div>
+
+        <div>
+            <label>Address Line 1</label>
+            <input name="buyer_address1" id="buyer_address1">
+        </div>
+
+        <div>
+            <label>Address Line 2</label>
+            <input name="buyer_address2" id="buyer_address2">
+        </div>
+
+        <div>
+            <label>GST</label>
+            <input name="buyer_gst" id="buyer_gst">
+        </div>
+
+        <div>
+            <label>State</label>
+            <input name="buyer_state" id="buyer_state">
+        </div>
+
+        <div>
+            <label>Pincode</label>
+            <input name="buyer_pincode" id="buyer_pincode">
+        </div>
+
+        <div>
+            <label>Invoice No</label>
+            <input name="invoice_no">
+        </div>
+
+        <div>
+            <label>Date</label>
+            <input type="date" name="date">
+        </div>
+
+    </div>
+
+    <h3>Items</h3>
+
+    <table id="itemsTable">
+
+        <tr>
+            <th>Sl</th>
+            <th>Item</th>
+            <th>Description</th>
+            <th>HSN</th>
+            <th>Qty</th>
+            <th>Rate</th>
+            <th>Per</th>
+            <th>Amount</th>
+            <th>Action</th>
+        </tr>
+
+    </table>
+
+    <button type="button" class="btn-add" onclick="addRow()">
+        + Add Item
+    </button>
+     <br><br>
+    <table>
+        <tr>
+            <th>Total Quantity</th>
+            <th>Total Amount</th>
+        </tr>
+
+        <tr>
+            <td>
+                <span id="totalQty">0.00</span>
+            </td>
+
+            <td>
+                ₹ <span id="totalAmount">0.00</span>
+            </td>
+        </tr>
+    </table>
+
+    <button type="submit" class="btn-submit">
+        Generate PDF
+    </button>
+
+</form>
+
+</div>
+
+<script>
+
+// =====================================
+// BUYER DATA
+// =====================================
+
+const buyers = {
+
+    Luxmi: {
+        businessname: "Luxmi General Store-Bela",
+        name: "Suman Kumar Yadav",
+        address1: "Ward No-08",
+        address2: "Bela, Basmatiya",
+        gst: "10APBPY6263M1ZK",
+        state: "Bihar",
+        pincode: "854336"
+    },
+
+    Pihu: {
+        businessname: "Pihu Traders",
+        name: "Pihu",
+        address1: "S/O- Thakur Prasad Gupta, Ward No.-4, Near Shiv Man",
+        address2: "Basmatiya",
+        gst: "10BSVPG8917Q2ZX",
+        state: "Bihar",
+        pincode: "854336"
+    },
+
+    Anand: {
+        businessname: "Anand Kirana General Store",
+        name: "Anand",
+        address1: "Ward No. 07,Bela,Basmatia,",
+        address2: "Araria, Bihar",
+        gst: "10IGNPS3504Q1ZV",
+        state: "Bihar",
+        pincode: "854336"
+    }
+};
+
+// =====================================
+// ITEM DATA
+// =====================================
+
+const itemMaster = {
+
+    coke250ml: {
+        description: "Coke 250ml X28 RS15 @40%",
+        hsn: "22021010",
+        rate: 210,
+        per: "CASE"
+    },
+    coke750ml: {
+        description: "Coke 750ml X24 RS40 @40%",
+        hsn: "22021010",
+        rate: 300,
+        per: "CASE"
+    },
+    coke2l: {
+        description: "Coke 2L X9 RS99 @40%",
+        hsn: "22021010",
+        rate: 210,
+        per: "CASE"
+    },
+    coke_225l: {
+        description: "Coke 2.25L X9 RS99 @40%",
+        hsn: "22021010",
+        rate: 210,
+        per: "CASE"
+    },
+    sprite250ml: {
+        description: "Sprite 250ml X28 RS15 @40%",
+        hsn: "22021010",
+        rate: 210,
+        per: "CASE"
+    },
+    sprite750ml: {
+        description: "Sprite 750ml X24 RS40 @40%",
+        hsn: "22021010",
+        rate: 300,
+        per: "CASE"
+    },
+    sprite2l: {
+        description: "Sprite 2L X9 RS99 @40%",
+        hsn: "22021010",
+        rate: 210,
+        per: "CASE"
+    },
+    sprite_225l: {
+        description: "Sprite 2.25L X9 RS99 @40%",
+        hsn: "22021010",
+        rate: 210,
+        per: "CASE"
+    }
+};
+
+let sl = 1;
+
+// =====================================
+// FILL BUYER DETAILS
+// =====================================
+
+function fillBuyerDetails() {
+
+    let selected = document.getElementById("buyerSelect").value;
+
+    if (!selected) return;
+
+    let buyer = buyers[selected];
+
+    document.getElementById("buyer_businessname").value = buyer.businessname;
+    document.getElementById("buyer_name").value = buyer.name;
+    document.getElementById("buyer_address1").value = buyer.address1;
+    document.getElementById("buyer_address2").value = buyer.address2;
+    document.getElementById("buyer_gst").value = buyer.gst;
+    document.getElementById("buyer_state").value = buyer.state;
+    document.getElementById("buyer_pincode").value = buyer.pincode;
+}
+
+// =====================================
+// ADD ITEM ROW
+// =====================================
+
+function addRow() {
+
+    let table = document.getElementById("itemsTable");
+
+    let row = table.insertRow();
+
+    row.innerHTML = `
+
+        <td>
+            <input name="sl" value="${sl}" readonly>
+        </td>
+
+        <td>
+            <select onchange="fillItem(this)">
+                <option value="">Select Item</option>
+                <option value="coke250ml">Coke 250ml</option>
+                <option value="coke750ml">Coke 750ml</option>
+                <option value="coke2l">Coke 2L</option>
+                <option value="coke_225l">Coke 2.25L</option>
+                <option value="sprite250ml">Sprite 250ml</option>
+                <option value="sprite750ml">Sprite 750ml</option>
+                <option value="sprite2l">Sprite 2L</option>
+                <option value="sprite_225l">Sprite 2.25L</option>
+            </select>
+        </td>
+
+        <td>
+            <input name="description">
+        </td>
+
+        <td>
+            <input name="hsn">
+        </td>
+
+        <td>
+            <input name="qty" type="number" step="0.01" oninput="calculateAmount(this)">
+        </td>
+
+        <td>
+            <input name="rate" type="number" step="0.01" oninput="calculateAmount(this)">
+        </td>
+
+        <td>
+            <input name="per">
+        </td>
+
+        <td>
+            <input name="amount" readonly>
+        </td>
+
+        <td>
+            <button type="button" class="btn-remove" onclick="removeRow(this)">
+                X
+            </button>
+        </td>
+    `;
+
+    sl++;
+}
+
+// =====================================
+// REMOVE ROW
+// =====================================
+
+function removeRow(button) {
+    button.parentElement.parentElement.remove();
+    updateTotals();
+}
+
+// =====================================
+// FILL ITEM DETAILS
+// =====================================
+
+function fillItem(selectElement) {
+
+    let selected = selectElement.value;
+
+    if (!selected) return;
+
+    let item = itemMaster[selected];
+
+    let row = selectElement.parentElement.parentElement;
+
+    row.querySelector('input[name="description"]').value = item.description;
+    row.querySelector('input[name="hsn"]').value = item.hsn;
+    row.querySelector('input[name="rate"]').value = item.rate;
+    row.querySelector('input[name="per"]').value = item.per;
+
+    calculateAmount(selectElement);
+}
+
+// =====================================
+// AUTO CALCULATE AMOUNT
+// =====================================
+
+function calculateAmount(element) {
+
+    let row = element.parentElement.parentElement;
+
+    let qty = parseFloat(
+        row.querySelector('input[name="qty"]').value
+    ) || 0;
+
+    let rate = parseFloat(
+        row.querySelector('input[name="rate"]').value
+    ) || 0;
+
+    let amount = qty * rate;
+
+    row.querySelector('input[name="amount"]').value =
+        amount.toFixed(2);
+
+    updateTotals();
+}
+
+// =====================================
+// UPDATE TOTALS
+// =====================================
+
+function updateTotals() {
+
+    let qtyInputs =
+        document.querySelectorAll('input[name="qty"]');
+
+    let amountInputs =
+        document.querySelectorAll('input[name="amount"]');
+
+    let totalQty = 0;
+
+    let totalAmount = 0;
+
+    qtyInputs.forEach(input => {
+
+        totalQty += parseFloat(input.value) || 0;
+    });
+
+    amountInputs.forEach(input => {
+
+        totalAmount += parseFloat(input.value) || 0;
+    });
+
+    document.getElementById("totalQty").innerText =
+        totalQty.toFixed(2);
+
+    document.getElementById("totalAmount").innerText =
+        totalAmount.toFixed(2);
+}
+
+</script>
+
+</body>
+</html>
